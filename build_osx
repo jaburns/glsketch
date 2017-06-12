@@ -3,9 +3,8 @@ set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cc -o game \
-        src/client/*.cpp \
-        src/client/models/*.cpp \
-        src/shared/*.cpp \
+        src/*.cpp \
+        src/models/*.cpp \
         external/lodepng/lodepng.cpp \
     -Iexternal/lodepng \
     -Iexternal/glm \

@@ -3,7 +3,7 @@
 #include <memory>
 #include "glfw.hpp"
 #include "resources.hpp"
-#include "../shared/world.hpp"
+#include "world.hpp"
 
 class Renderer
 {

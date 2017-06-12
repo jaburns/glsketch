@@ -1,4 +1,4 @@
-#include "readinput.hpp"
+#include "input.hpp"
 
 #include <glm/geometric.hpp>
 #include <glm/gtc/constants.hpp>

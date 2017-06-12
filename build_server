@@ -1,8 +1,0 @@
-#!/bin/sh
-
-g++ -o server_bin \
-    src/server/*.cpp \
-    src/shared/*.cpp \
-    -Iexternal/glm \
-    -std=c++14 \
-    -lstdc++
