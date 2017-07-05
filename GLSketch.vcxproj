@@ -30,7 +30,6 @@
     <ClCompile Include="external\lodepng\lodepng.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\models\teapot.cpp" />
     <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\teapot.cpp" />
