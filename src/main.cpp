@@ -1,11 +1,9 @@
+#include <iostream>
 #include "input.hpp"
+#include "world.hpp"
 #include "render.hpp"
 
-#include <iostream>
-
-using namespace std;
-
-void run()
+int main(int argc, char** argv)
 {
     Renderer renderer;
     World world;
@@ -16,18 +14,10 @@ void run()
         world = world.step(input_state);
         renderer.render(world);
     }
-}
 
-void wait_for_char()
-{
-    cout << "Enter a char to quit";
-    char x;
-    cin >> x;
-}
+    #ifdef _WIN32
+        std::cout << "Enter a char to quit"; char x; std::cin >> x;
+    #endif
 
-int main(int argc, char** argv)
-{
-    run();
-//  wait_for_char();
     return 0;
 }

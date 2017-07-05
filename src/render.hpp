@@ -3,24 +3,24 @@
 #include <memory>
 #include "glfw.hpp"
 #include "resources.hpp"
+#include "renderer/teapot.hpp"
+#include "renderer/skybox.hpp"
 #include "world.hpp"
 
 class Renderer
 {
-    GLFWwindow* window;
-    std::unique_ptr<ShaderProgram> program;
-    std::unique_ptr<Texture> texture;
-    std::unique_ptr<ShaderProgram> skyboxShader;
-    std::unique_ptr<CubeMap> skyboxTexture;
-    GLuint index_buffer;
+    GLFWwindow* m_window;
+    std::unique_ptr<SkyboxRenderer> m_skybox_renderer;
+    std::unique_ptr<TeapotRenderer> m_teapot_renderer;
 
-    GLuint vao, skyboxVAO;
+    Renderer(const Renderer&) =delete;
+    Renderer& operator=(const Renderer&) =delete;
 
 public:
     Renderer();
     ~Renderer();
 
-    GLFWwindow* raw_glfw_window() const { return window; }
-    bool should_close_window() const { return glfwWindowShouldClose(window); }
+    GLFWwindow* raw_glfw_window() const { return m_window; }
+    bool should_close_window() const { return glfwWindowShouldClose(m_window); }
     void render(const World& world);
 };

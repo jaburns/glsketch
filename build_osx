@@ -4,7 +4,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cc -o game \
         src/*.cpp \
-        src/models/*.cpp \
+        src/renderer/*.cpp \
         external/lodepng/lodepng.cpp \
     -Iexternal/lodepng \
     -Iexternal/glm \
@@ -15,4 +15,4 @@ cc -o game \
 
 #   -O3 \
 
-./game
+# ./game

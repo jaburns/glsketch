@@ -1,6 +1,8 @@
-#include "teapot.hpp"
+#include "../resources.hpp"
+#include <glm/vec3.hpp>
 
-extern const glm::vec3 teapot_vertices[531] = {
+static const unsigned int TEAPOT_VERTEX_COUNT = 531;
+static const glm::vec3 teapot_vertices[TEAPOT_VERTEX_COUNT] = {
     { 0.0, 0.0, 0.0 },
     { 40.6266, 28.3457, -1.10804 },
     { 40.0714, 30.4443, -1.10804 },
@@ -534,8 +536,8 @@ extern const glm::vec3 teapot_vertices[531] = {
     { 34.9202, 28.3457, -15.6121 }
 };
 
-
-extern const glm::vec3 teapot_normals[531] = {
+static const unsigned int TEAPOT_NORMAL_COUNT = 531;
+static const glm::vec3 teapot_normals[TEAPOT_NORMAL_COUNT] = {
     { 0.0, 0.0, 0.0 },
     { -0.966742, -0.255752, 0.0 },
     { -0.966824, 0.255443, 0.0 },
@@ -1069,7 +1071,8 @@ extern const glm::vec3 teapot_normals[531] = {
     { 0.48559, 0.850653, -0.201474 },
 };
 
-extern const unsigned int teapot_indices[3072] = {
+static const unsigned int TEAPOT_INDEX_COUNT = 3072;
+static const unsigned int teapot_indices[TEAPOT_INDEX_COUNT] = {
     7, 6, 1,
     1, 2, 7,
     8, 7, 2,

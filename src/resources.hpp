@@ -2,14 +2,16 @@
 
 #include "glfw.hpp"
 #include <memory>
+#include <vector>
 #include <string>
+#include <glm/vec3.hpp>
 
 class GLuintResource
 {
 protected:
-    GLuint _id = 0;
+    GLuint m_id = 0;
 public:
-    operator GLuint() const { return _id; }
+    operator GLuint() const { return m_id; }
 };
 
 struct ShaderProgram : public GLuintResource

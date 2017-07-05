@@ -3,59 +3,7 @@
 #include <utility>
 #include <stdlib.h>
 #include <glm/mat4x4.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
-
-#include <iostream>
-
-#include "models/teapot.hpp"
-
-static GLfloat skyboxVertices[] = {
-    -1.0f,  1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-
-    -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-
-     1.0f, -1.0f, -1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-
-    -1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,
-
-    -1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f,  1.0f,
-
-    -1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
-};
-
-
 
 static void error_callback(int error, const char* description)
 {
@@ -77,13 +25,13 @@ Renderer::Renderer()
     glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4); // MSAA
 
-    window = glfwCreateWindow(1280, 720, "Hello world", NULL, NULL);
-    if (!window) {
+    m_window = glfwCreateWindow(1280, 720, "GL Sketch", NULL, NULL);
+    if (!m_window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(m_window);
     glfwSwapInterval(1); // 1: vsync, 0: fast
 
 #ifdef _WIN32
@@ -101,54 +49,16 @@ Renderer::Renderer()
     glCullFace(GL_BACK);
     glClearColor(0.16f, 0.17f, 0.18f, 1.0f);
 
-    program = std::make_unique<ShaderProgram>("res/shaders/main.vert", "res/shaders/main.frag");;
-    texture = std::make_unique<Texture>("res/texture.png");
-    skyboxShader = std::make_unique<ShaderProgram>("res/shaders/skybox.vert", "res/shaders/skybox.frag");;
-    skyboxTexture = std::make_unique<CubeMap>(
-        "res/hw_crater/craterlake_rt.png",
-        "res/hw_crater/craterlake_lf.png",
-        "res/hw_crater/craterlake_up.png",
-        "res/hw_crater/craterlake_dn.png",
-        "res/hw_crater/craterlake_bk.png",
-        "res/hw_crater/craterlake_ft.png"
-    );
-
-    // Setup teapot VAO
-//  GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    GLuint vertex_buffer;
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(teapot_vertices), teapot_vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(glGetAttribLocation(*program, "position"));
-    glVertexAttribPointer(glGetAttribLocation(*program, "position"), 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*) 0);
-    GLuint normal_buffer;
-    glGenBuffers(1, &normal_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(teapot_normals), teapot_normals, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(glGetAttribLocation(*program, "normal"));
-    glVertexAttribPointer(glGetAttribLocation(*program, "normal"), 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*) 0);
-    glGenBuffers(1, &index_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(teapot_indices), teapot_indices, GL_STATIC_DRAW);
-
-    // Setup skybox VAO
-//  GLuint skyboxVAO;
-    glGenVertexArrays(1, &skyboxVAO);
-    glBindVertexArray(skyboxVAO);
-    GLuint skyboxVBO;
-    glGenBuffers(1, &skyboxVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(glGetAttribLocation(*skyboxShader, "position"));
-    glVertexAttribPointer(glGetAttribLocation(*skyboxShader, "position"), 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+    m_skybox_renderer = std::make_unique<SkyboxRenderer>();
+    m_teapot_renderer = std::make_unique<TeapotRenderer>(m_skybox_renderer->get_skybox_cubemap());
 }
+
+static int frame = 0;
 
 void Renderer::render(const World& world)
 {
     int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
+    glfwGetFramebufferSize(m_window, &width, &height);
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -158,55 +68,19 @@ void Renderer::render(const World& world)
         -world.camera_position
     );
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, *skyboxTexture);
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, *texture);
-
-    {
-        auto new_v = glm::mat4(glm::mat3(v));
-
-        glDepthMask(GL_FALSE);
-
-        glUseProgram(*skyboxShader);
-        glUniformMatrix4fv(glGetUniformLocation(*skyboxShader, "view"), 1, GL_FALSE, glm::value_ptr(new_v));
-        glUniformMatrix4fv(glGetUniformLocation(*skyboxShader, "projection"), 1, GL_FALSE, glm::value_ptr(p));
-        glUniform1i(glGetUniformLocation(*skyboxShader, "skybox"), 0);
-
-        glBindVertexArray(skyboxVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        glDepthMask(GL_TRUE);
+    m_teapot_renderer->use(world.camera_position, v, p);
+    for (auto tp : world.teapots) {
+        m_teapot_renderer->draw(tp.transform);
     }
 
-    {
-        glUseProgram(*program);
-        glUniform3fv(glGetUniformLocation(*program, "camera_pos"), 1, glm::value_ptr(world.camera_position));
-        glUniformMatrix4fv(glGetUniformLocation(*program, "view"), 1, GL_FALSE, glm::value_ptr(v));
-        glUniformMatrix4fv(glGetUniformLocation(*program, "projection"), 1, GL_FALSE, glm::value_ptr(p));
-        glUniform1i(glGetUniformLocation(*program, "skybox"), 0);
-        glUniform1i(glGetUniformLocation(*program, "surf_texture"), 1);
+    m_skybox_renderer->draw_once(v, p);
 
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-
-        for (auto tp : world.teapots) {
-            auto m = glm::scale(glm::translate(glm::mat4(1.0f), tp.transform.position), tp.transform.scale) 
-                * glm::mat4_cast(tp.transform.rotation);
-
-            glUniformMatrix4fv(glGetUniformLocation(*program, "model"), 1, GL_FALSE, glm::value_ptr(m));
-
-            glDrawElements(GL_TRIANGLES, sizeof(teapot_indices) / sizeof(unsigned int), GL_UNSIGNED_INT, (void*)0);
-        }
-    }
-
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(m_window);
     glfwPollEvents();
 }
 
 Renderer::~Renderer()
 {
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(m_window);
     glfwTerminate();
 }
