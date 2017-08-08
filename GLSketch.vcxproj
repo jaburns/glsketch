@@ -19,22 +19,21 @@
   <ItemGroup>
     <ClInclude Include="src\glfw.hpp" />
     <ClInclude Include="src\input.hpp" />
-    <ClInclude Include="src\render.hpp" />
     <ClInclude Include="src\renderer\skybox.hpp" />
     <ClInclude Include="src\renderer\teapot.hpp" />
     <ClInclude Include="src\renderer\teapot_mesh.hpp" />
     <ClInclude Include="src\resources.hpp" />
-    <ClInclude Include="src\world.hpp" />
+    <ClInclude Include="src\scenes\teapot_fountain.hpp" />
+    <ClInclude Include="src\types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\lodepng\lodepng.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\teapot.cpp" />
     <ClCompile Include="src\resources.cpp" />
-    <ClCompile Include="src\world.cpp" />
+    <ClCompile Include="src\scenes\teapot_fountain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\main.frag" />

@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include "../glfw.hpp"
 #include "../resources.hpp"
-#include "../world.hpp"
+#include "../types.hpp"
 
 class TeapotRenderer
 {
