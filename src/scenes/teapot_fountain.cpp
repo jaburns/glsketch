@@ -8,8 +8,6 @@
 #include <glm/gtc/random.hpp>
 #include <math.h>
 
-#include <iostream>
-
 static const float TIME_SPEED_UP = 1.5f;
 static const float TIME_SLOW_DOWN = 1.3f;
 static const int MAX_POTS = 600;
@@ -89,6 +87,7 @@ TeapotFountain::TeapotFountain()
     world.camera_up = { 0.0f, 1.0f, 0.0f };
     world.camera_look = { 0.0f, 0.0f, -1.0f };
     world.time_factor = 1.0f;
+    world.frame_counter = 0;
 
     Teapot ntp;
     ntp.transform.position.z = -3.0f;
@@ -98,7 +97,7 @@ TeapotFountain::TeapotFountain()
 
 void TeapotFountain::step(const InputState& input, int fb_width, int fb_height)
 {
-//  world = step_world(world, input);
+    world = step_world(world, input);
 
     glViewport(0, 0, fb_width, fb_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -108,8 +107,6 @@ void TeapotFountain::step(const InputState& input, int fb_width, int fb_height)
         glm::lookAt(glm::vec3(0.0f), world.camera_look, world.camera_up),
         -world.camera_position
     );
-
-    std::cout << world.teapots.size() << std::endl;
 
     m_teapot_renderer->use(world.camera_position, v, p);
     for (auto tp : world.teapots) {
