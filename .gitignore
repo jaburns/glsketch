@@ -3,5 +3,5 @@ server_bin
 Debug
 Release
 GLGame.vcxproj.user
-.vs
-.vscode
+Makefile
+build

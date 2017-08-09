@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -e
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+# Requires SDL2 v2.0.5: brew install sdl2
+
+CC='cc'
+CFLAGS='-std=c++14 -Iexternal/lodepng -Iexternal/glm -Iexternal/tinyxml2'
+LDFLAGS='-lstdc++ -lglfw -framework OpenGL'
+BIN_FILE='game'
+
+cpp_to_obj() {
+    printf 'build/'
+    echo "$1" | sed 's/cpp$/o/;s:/:_:g'
+}
+
+make_cmd() {
+    local obj_file="$(cpp_to_obj "$1")"
+    $CC $CFLAGS -MM -MT "$obj_file" -c "$1"
+    echo -e "\t$CC $CFLAGS -o $obj_file -c $1"
+}
+
+file_list() {
+    find src -iname '*.cpp'
+    echo external/lodepng/lodepng.cpp
+}
+
+print_makefile() {
+    local all_objs=''
+    for f in $(file_list); do
+        all_objs="$all_objs $(cpp_to_obj $f)"
+    done
+    echo "$BIN_FILE: $all_objs"
+    echo -e "\t$CC -o $BIN_FILE $all_objs $LDFLAGS"
+
+    for f in $(file_list); do
+        make_cmd "$f"
+    done
+
+    echo '.PHONY: clean run'
+    echo -e "clean:\n\t find . -iname '*.o' | xargs rm && rm -f ./game"
+    echo -e "run: $BIN_FILE \n\t ./$BIN_FILE"
+}
+
+mkdir -p build
+print_makefile > Makefile
