@@ -5,3 +5,7 @@ Release
 GLSketch.vcxproj.user
 Makefile
 build
+SDL2.dll
+glew32.dll
+external/SDL2-2.0.5
+external/glew-2.1.0
