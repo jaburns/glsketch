@@ -2,6 +2,6 @@ game
 server_bin
 Debug
 Release
-GLGame.vcxproj.user
+GLSketch.vcxproj.user
 Makefile
 build
