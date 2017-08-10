@@ -1,4 +1,4 @@
-#include "teapot_fountain.hpp"
+#include "main.hpp"
 
 #include <vector>
 #include <utility>

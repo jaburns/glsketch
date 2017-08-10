@@ -25,23 +25,25 @@
     <Library Include="external\SDL2-2.0.5\lib\x64\SDL2main.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\glfw.hpp" />
-    <ClInclude Include="src\input.hpp" />
-    <ClInclude Include="src\renderer\skybox.hpp" />
-    <ClInclude Include="src\renderer\teapot.hpp" />
-    <ClInclude Include="src\renderer\teapot_mesh.hpp" />
-    <ClInclude Include="src\resources.hpp" />
-    <ClInclude Include="src\scenes\teapot_fountain.hpp" />
-    <ClInclude Include="src\types.hpp" />
+    <ClInclude Include="src\common\gfx.hpp" />
+    <ClInclude Include="src\common\input.hpp" />
+    <ClInclude Include="src\teapots\skybox_renderer.hpp" />
+    <ClInclude Include="src\teapots\teapot_renderer.hpp" />
+    <ClInclude Include="src\teapots\teapot_mesh.hpp" />
+    <ClInclude Include="src\common\resources.hpp" />
+    <ClInclude Include="src\teapots\main.hpp" />
+    <ClInclude Include="src\common\types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\lodepng\lodepng.cpp" />
-    <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\common\input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\renderer\skybox.cpp" />
-    <ClCompile Include="src\renderer\teapot.cpp" />
-    <ClCompile Include="src\resources.cpp" />
-    <ClCompile Include="src\scenes\teapot_fountain.cpp" />
+    <ClCompile Include="src\teapots\skybox_renderer.cpp" />
+    <ClCompile Include="src\teapots\teapot_renderer.cpp" />
+    <ClCompile Include="src\common\resources.cpp" />
+    <ClCompile Include="src\teapots\main.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\%(RelativeDir)\%(Filename).obj</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\main.frag" />

@@ -1,4 +1,4 @@
-#include "teapot.hpp"
+#include "teapot_renderer.hpp"
 #include "teapot_mesh.hpp" 
 
 #include <glm/gtc/type_ptr.hpp>

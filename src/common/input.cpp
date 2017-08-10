@@ -28,6 +28,8 @@ static float tilt = 0.0f;
 
 static InputState state;
 
+// TODO Re-implement input using SDL
+
 /*
 static void update_state()
 {

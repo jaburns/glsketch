@@ -1,4 +1,4 @@
-#include "../resources.hpp"
+#include "../common/resources.hpp"
 #include <glm/vec3.hpp>
 
 static const unsigned int TEAPOT_VERTEX_COUNT = 531;

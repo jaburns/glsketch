@@ -1,6 +1,7 @@
 #include <iostream>
-#include "input.hpp"
-#include "scenes/teapot_fountain.hpp"
+#include "common/gfx.hpp"
+#include "common/input.hpp"
+#include "teapots/main.hpp"
 
 static SDL_Window* s_window;
 static SDL_GLContext s_context;

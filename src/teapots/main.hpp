@@ -5,12 +5,12 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "../glfw.hpp"
-#include "../resources.hpp"
-#include "../renderer/teapot.hpp"
-#include "../renderer/skybox.hpp"
-#include "../input.hpp"
-#include "../types.hpp"
+#include "../common/gfx.hpp"
+#include "../common/resources.hpp"
+#include "../common/input.hpp"
+#include "../common/types.hpp"
+#include "teapot_renderer.hpp"
+#include "skybox_renderer.hpp"
 
 class TeapotFountain
 {

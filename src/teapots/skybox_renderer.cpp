@@ -1,4 +1,4 @@
-#include "skybox.hpp"
+#include "skybox_renderer.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
