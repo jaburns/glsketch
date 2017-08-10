@@ -2,7 +2,10 @@
 #include "input.hpp"
 #include "scenes/teapot_fountain.hpp"
 
-static GLFWwindow *s_window;
+static SDL_Window* s_window;
+static SDL_GLContext s_context;
+static int s_window_width, s_window_height;
+static bool s_should_close_window = false;
 
 static void error_callback(int error, const char* description)
 {
@@ -12,34 +15,69 @@ static void error_callback(int error, const char* description)
 
 static void init_opengl()
 {
-    glfwSetErrorCallback(error_callback);
-    if (!glfwInit()) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
-    glfwWindowHint(GLFW_SAMPLES, 4); // MSAA
+    s_window_width = 1280;
+    s_window_height = 720;
 
-    s_window = glfwCreateWindow(1280, 720, "GL Sketch", NULL, NULL);
-    if (!s_window) {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1); // MSAA
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
+    SDL_GL_SetSwapInterval(1); // 1: vsync, 0: fast
 
-    glfwMakeContextCurrent(s_window);
-    glfwSwapInterval(1); // 1: vsync, 0: fast
+    s_window = SDL_CreateWindow(
+        "GL Sketch", 
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        s_window_width, s_window_height,
+        SDL_WINDOW_OPENGL
+    );
+
+    SDL_SetWindowResizable(s_window, SDL_TRUE);
+
+    s_context = SDL_GL_CreateContext(s_window);
 
 #ifdef _WIN32
-    GLint GlewInitResult = glewInit();
-    if (GLEW_OK != GlewInitResult) {
-        printf("ERROR: %s\n", glewGetErrorString(GlewInitResult));
+    glewExperimental = GL_TRUE;
+    const auto glewInitResult = glewInit();
+    if (glewInitResult != GLEW_OK) {
+        printf("ERROR: %s\n", glewGetErrorString(glewInitResult));
         exit(EXIT_FAILURE);
     }
 #endif
+}
+
+static void poll_sdl_events()
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                s_should_close_window = true;
+                break;
+
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    s_window_width = event.window.data1;
+                    s_window_height = event.window.data2;
+                    glViewport(0, 0, s_window_width, s_window_height);
+                }
+                break;
+
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    s_should_close_window = true;
+                }
+                break;
+
+            case SDL_KEYUP:
+                break;
+        }
+    }
 }
 
 int main(int argc, char** argv)
@@ -49,19 +87,18 @@ int main(int argc, char** argv)
     TeapotFountain scene;
     Input::bind_handlers(s_window);
 
-    while (!glfwWindowShouldClose(s_window)) {
+    while (!s_should_close_window) {
         const auto input_state = Input::read_state();
-        int width, height;
-        glfwGetFramebufferSize(s_window, &width, &height);
 
-        scene.step(input_state, width, height);
+        scene.step(input_state, s_window_width, s_window_height);
 
-        glfwSwapBuffers(s_window);
-        glfwPollEvents();
+        SDL_GL_SwapWindow(s_window);
+        poll_sdl_events();
     }
 
-    glfwDestroyWindow(s_window);
-    glfwTerminate();
+	SDL_GL_DeleteContext(s_context);
+	SDL_DestroyWindow(s_window);
+	SDL_Quit();
 
     return 0;
 }

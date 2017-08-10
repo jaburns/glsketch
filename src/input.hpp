@@ -12,6 +12,6 @@ struct InputState
 
 namespace Input
 {
-    void bind_handlers(GLFWwindow* window);
+    void bind_handlers(SDL_Window* window);
     InputState read_state();
 }

@@ -28,6 +28,7 @@ static float tilt = 0.0f;
 
 static InputState state;
 
+/*
 static void update_state()
 {
     state.look_dir = {
@@ -110,15 +111,16 @@ static void cursor_pos_callback_first(GLFWwindow* window, double xpos, double yp
     last_mouse_read_y = (float)ypos;
     glfwSetCursorPosCallback(window, cursor_pos_callback);
 }
+*/
 
-void Input::bind_handlers(GLFWwindow* window)
+void Input::bind_handlers(SDL_Window* window)
 {
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, cursor_pos_callback_first);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
-    glfwSetKeyCallback(window, key_callback);
+//  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//  glfwSetCursorPosCallback(window, cursor_pos_callback_first);
+//  glfwSetMouseButtonCallback(window, mouse_button_callback);
+//  glfwSetKeyCallback(window, key_callback);
 
-    update_state();
+//  update_state();
 }
 
 InputState Input::read_state()
