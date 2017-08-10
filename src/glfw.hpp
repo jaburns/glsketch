@@ -1,7 +1,11 @@
 #pragma once
-#ifdef _WIN32
+
+#ifdef __APPLE__
+#   include <OpenGL/gl3.h>
+#   include <SDL2/SDL.h>
+#elif _WIN32
 #   include <GL/glew.h>
-#elif __APPLE__
-#   define GLFW_INCLUDE_GLCOREARB
+#   include <SDL.h>
+#else
+#   error "Unsupported platform"
 #endif
-#include <GLFW/glfw3.h>
