@@ -12,5 +12,8 @@ typedef struct InputState
 }
 InputState;
 
-void input_bind_handlers(SDL_Window* window);
+void input_handle_key_event(SDL_Keycode keycode, bool press);
+void input_handle_mouse_motion(SDL_MouseMotionEvent event);
+void input_handle_mouse_click(bool button_down);
+
 InputState input_read_state();

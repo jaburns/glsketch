@@ -40,12 +40,13 @@ static void init_opengl()
     );
 
     SDL_SetWindowResizable(s_window, SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     s_context = SDL_GL_CreateContext(s_window);
 
 #ifdef _WIN32
     glewExperimental = GL_TRUE;
-    const auto glewInitResult = glewInit();
+    const int glewInitResult = glewInit();
     if (glewInitResult != GLEW_OK) {
         printf("ERROR: %s\n", glewGetErrorString(glewInitResult));
         exit(EXIT_FAILURE);
@@ -74,9 +75,23 @@ static void poll_sdl_events()
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     s_should_close_window = true;
                 }
+                input_handle_key_event(event.key.keysym.sym, true);
                 break;
 
             case SDL_KEYUP:
+                input_handle_key_event(event.key.keysym.sym, false);
+                break;
+
+            case SDL_MOUSEMOTION:
+                input_handle_mouse_motion(event.motion);
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                input_handle_mouse_click(true);
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                input_handle_mouse_click(false);
                 break;
         }
     }
@@ -88,10 +103,8 @@ int main(int argc, char** argv)
 
     scene_teapots_init();
 
-    input_bind_handlers(s_window);
-
     while (!s_should_close_window) {
-        const struct InputState input_state = input_read_state();
+        const InputState input_state = input_read_state();
 
         scene_teapots_step(&input_state, s_window_width, s_window_height);
 

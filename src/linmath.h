@@ -1,5 +1,4 @@
-#ifndef LINMATH_H
-#define LINMATH_H
+#pragma once
 
 #ifdef _MSC_VER
 #define inline __inline
@@ -596,5 +595,3 @@ static inline void quat_from_mat4x4(quat q, mat4x4 M)
 	q[2] = (M[p[2]][p[0]] - M[p[0]][p[2]])/(2.f*r);
 	q[3] = (M[p[2]][p[1]] - M[p[1]][p[2]])/(2.f*r);
 }
-
-#endif
