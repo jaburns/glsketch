@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../common/linmath.h"
-#include "../common/types.h"
-#include "../common/resources.h"
+#include "../linmath.h"
+#include "../types.h"
+#include "../resources.h"
 
 typedef struct TeapotRenderer TeapotRenderer;
 

@@ -26,21 +26,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="external\lodepng\lodepng.h" />
-    <ClInclude Include="src\common\gfx.h" />
-    <ClInclude Include="src\common\input.h" />
-    <ClInclude Include="src\common\linmath.h" />
-    <ClInclude Include="src\common\resources.h" />
+    <ClInclude Include="src\gfx.h" />
+    <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\linmath.h" />
+    <ClInclude Include="src\resources.h" />
     <ClInclude Include="src\teapots\skybox_renderer.h" />
     <ClInclude Include="src\teapots\teapot_renderer.h" />
     <ClInclude Include="src\teapots\teapot_mesh.h" />
     <ClInclude Include="src\teapots\main.h" />
-    <ClInclude Include="src\common\types.h" />
+    <ClInclude Include="src\types.h" />
     <ClInclude Include="src\teapots\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\lodepng\lodepng.c" />
-    <ClCompile Include="src\common\input.c" />
-    <ClCompile Include="src\common\resources.c" />
+    <ClCompile Include="src\input.c" />
+    <ClCompile Include="src\resources.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\teapots\skybox_renderer.c" />
     <ClCompile Include="src\teapots\teapot_renderer.c" />

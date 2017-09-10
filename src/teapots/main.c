@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 
-#include "../common/gfx.h"
-#include "../common/resources.h"
-#include "../common/types.h"
-#include "../common/linmath.h"
+#include "../gfx.h"
+#include "../resources.h"
+#include "../types.h"
+#include "../linmath.h"
 #include "world.h"
 #include "teapot_renderer.h"
 #include "skybox_renderer.h"

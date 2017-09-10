@@ -1,5 +1,4 @@
-#include "../common/linmath.h"
-#include "../common/resources.h"
+#include "../linmath.h"
 
 #define TEAPOT_VERTEX_COUNT  531
 #define TEAPOT_NORMAL_COUNT  531

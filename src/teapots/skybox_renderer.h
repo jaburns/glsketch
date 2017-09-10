@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../common/linmath.h"
-#include "../common/resources.h"
+#include "../linmath.h"
+#include "../resources.h"
 
 typedef struct SkyboxRenderer SkyboxRenderer;
 

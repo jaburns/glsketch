@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../common/types.h"
-#include "../common/input.h"
+#include "../types.h"
+#include "../input.h"
 
 typedef struct Teapot
 {

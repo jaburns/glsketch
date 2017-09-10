@@ -1,6 +1,6 @@
 #include "skybox_renderer.h"
 
-#include "../common/resources.h"
+#include "../resources.h"
 
 struct SkyboxRenderer
 {

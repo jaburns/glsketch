@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common/gfx.h"
-#include "common/input.h"
-// #include "teapots/main.hpp"
-
+#include "gfx.h"
+#include "input.h"
+#include "teapots/main.h"
 
 static SDL_Window* s_window;
 static SDL_GLContext s_context;
