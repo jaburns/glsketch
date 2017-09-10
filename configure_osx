@@ -5,13 +5,13 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Requires SDL2 v2.0.5: brew install sdl2
 
 CC='cc'
-CFLAGS='-std=c++14 -Iexternal/lodepng -Iexternal/glm -Iexternal/tinyxml2'
-LDFLAGS='-lstdc++ -lglfw -framework OpenGL'
+CFLAGS='-Iexternal/lodepng'
+LDFLAGS='-lglfw -framework OpenGL'
 BIN_FILE='game'
 
-cpp_to_obj() {
+c_to_obj() {
     printf 'build/'
-    echo "$1" | sed 's/cpp$/o/;s:/:_:g'
+    echo "$1" | sed 's/c$/o/;s:/:_:g'
 }
 
 make_cmd() {
@@ -21,8 +21,8 @@ make_cmd() {
 }
 
 file_list() {
-    find src -iname '*.cpp'
-    echo external/lodepng/lodepng.cpp
+    find src -iname '*.c'
+    echo external/lodepng/lodepng.c
 }
 
 print_makefile() {
