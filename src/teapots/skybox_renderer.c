@@ -60,13 +60,13 @@ void skybox_renderer_draw_once(SkyboxRenderer *renderer, const mat4x4 *view, con
 
     mat4x4 trunc_view;
     mat4x4_scale(trunc_view, *view, 1.0f);  // TODO write mat4x4_copy
- // trunc_view[0][3] = 0.0f;
- // trunc_view[1][3] = 0.0f;
- // trunc_view[2][3] = 0.0f;
- // trunc_view[3][0] = 0.0f;
- // trunc_view[3][1] = 0.0f;
- // trunc_view[3][2] = 0.0f;
- // trunc_view[3][3] = 0.0f;
+    trunc_view[0][3] = 0.0f;
+    trunc_view[1][3] = 0.0f;
+    trunc_view[2][3] = 0.0f;
+    trunc_view[3][0] = 0.0f;
+    trunc_view[3][1] = 0.0f;
+    trunc_view[3][2] = 0.0f;
+    trunc_view[3][3] = 0.0f;
 
     glUseProgram(renderer->program);
     glUniformMatrix4fv(glGetUniformLocation(renderer->program, "view"), 1, GL_FALSE, trunc_view);
