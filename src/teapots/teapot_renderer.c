@@ -14,7 +14,7 @@ struct TeapotRenderer
     ShaderProgramRef program;
     TextureRef texture;
 
-    CubeMapRef skybox_cubemap;
+    CubeMapRef skybox_cubemap; // borrowed
 };
 
 TeapotRenderer *teapot_renderer_create(CubeMapRef skybox_cubemap)
@@ -50,10 +50,10 @@ TeapotRenderer *teapot_renderer_create(CubeMapRef skybox_cubemap)
 void teapot_renderer_destroy(TeapotRenderer *renderer)
 {
     glBindVertexArray(0);
-    glDeleteVertexArrays(1, renderer->vao);
-    glDeleteBuffers(1, renderer->vertex_buffer);
-    glDeleteBuffers(1, renderer->normal_buffer);
-    glDeleteBuffers(1, renderer->index_buffer);
+    glDeleteVertexArrays(1, &renderer->vao);
+    glDeleteBuffers(1, &renderer->vertex_buffer);
+    glDeleteBuffers(1, &renderer->normal_buffer);
+    glDeleteBuffers(1, &renderer->index_buffer);
 
     resources_delete_shader(renderer->program);
     resources_delete_texture(renderer->texture);

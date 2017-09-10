@@ -25,6 +25,7 @@
     <Library Include="external\SDL2-2.0.5\lib\x64\SDL2main.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="external\lodepng\lodepng.h" />
     <ClInclude Include="src\common\gfx.h" />
     <ClInclude Include="src\common\input.h" />
     <ClInclude Include="src\common\linmath.h" />
@@ -32,9 +33,9 @@
     <ClInclude Include="src\teapots\skybox_renderer.h" />
     <ClInclude Include="src\teapots\teapot_renderer.h" />
     <ClInclude Include="src\teapots\teapot_mesh.h" />
-    <ClInclude Include="src\common\resources.hpp" />
     <ClInclude Include="src\teapots\main.h" />
     <ClInclude Include="src\common\types.h" />
+    <ClInclude Include="src\teapots\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\lodepng\lodepng.c" />
@@ -46,12 +47,15 @@
     <ClCompile Include="src\teapots\main.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\%(RelativeDir)\%(Filename).obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\teapots\world.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\main.frag" />
     <None Include="res\shaders\main.vert" />
     <None Include="res\shaders\skybox.frag" />
     <None Include="res\shaders\skybox.vert" />
+    <None Include="res\shaders\teapot.frag" />
+    <None Include="res\shaders\teapot.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -124,7 +128,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\external\glm;$(SolutionDir)\external\lodepng;$(SolutionDir)\external\win_glfw3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\external\lodepng;$(SolutionDir)\external\win_glfw3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,7 +144,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\external\glm;$(SolutionDir)\external\lodepng;$(SolutionDir)\external\tinyxml2;$(SolutionDir)\external\SDL2-2.0.5\include;$(SolutionDir)\external\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\external\lodepng;$(SolutionDir)\external\tinyxml2;$(SolutionDir)\external\SDL2-2.0.5\include;$(SolutionDir)\external\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>

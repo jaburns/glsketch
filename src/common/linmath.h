@@ -1,6 +1,10 @@
 #ifndef LINMATH_H
 #define LINMATH_H
 
+#ifdef _MSC_VER
+#define inline __inline
+#endif
+
 #include <math.h>
 
 #define LINMATH_H_DEFINE_VEC(n) \
@@ -547,6 +551,7 @@ static inline void mat4x4o_mul_quat(mat4x4 R, mat4x4 M, quat q)
 	R[3][0] = R[3][1] = R[3][2] = 0.f;
 	R[3][3] = 1.f;
 }
+
 static inline void quat_from_mat4x4(quat q, mat4x4 M)
 {
 	float r=0.f;
