@@ -88,7 +88,7 @@ void world_step(World *world, const InputState *input)
     } else {
         if (world->time_factor < 1.0f) {
             world->time_factor *= TIME_SPEED_UP;
-        } else { 
+        } else {
             world->time_factor = 1.0f;
         }
     }
@@ -101,7 +101,7 @@ void world_step(World *world, const InputState *input)
         vec3_set(world->teapots[i].transform.scale,   scale, scale, scale);
         quat_identity(world->teapots[i].transform.rotation);
 
-        spherical_rand(world->teapots[i].velocity.position, 0.1f);
+        spherical_rand(world->teapots[i].velocity.position);
         vec3_scale(world->teapots[i].velocity.position, world->teapots[i].velocity.position, 0.1f);
 
         vec3 new_pot_axis;

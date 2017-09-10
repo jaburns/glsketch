@@ -6,7 +6,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 CC='cc'
 CFLAGS='-Iexternal/lodepng'
-LDFLAGS='-lglfw -framework OpenGL'
+LDFLAGS='-lSDL2 -framework OpenGL'
 BIN_FILE='game'
 
 c_to_obj() {
@@ -15,7 +15,7 @@ c_to_obj() {
 }
 
 make_cmd() {
-    local obj_file="$(cpp_to_obj "$1")"
+    local obj_file="$(c_to_obj "$1")"
     $CC $CFLAGS -MM -MT "$obj_file" -c "$1"
     echo -e "\t$CC $CFLAGS -o $obj_file -c $1"
 }
@@ -28,7 +28,7 @@ file_list() {
 print_makefile() {
     local all_objs=''
     for f in $(file_list); do
-        all_objs="$all_objs $(cpp_to_obj $f)"
+        all_objs="$all_objs $(c_to_obj $f)"
     done
     echo "$BIN_FILE: $all_objs"
     echo -e "\t$CC -o $BIN_FILE $all_objs $LDFLAGS"
