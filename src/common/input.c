@@ -1,12 +1,7 @@
-#include "input.hpp"
+#include "input.h"
 
-#include <glm/geometric.hpp>
-#include <glm/gtc/constants.hpp>
+#include <stdbool.h>
 #include <math.h>
-#define GLM_ENABLE_EXPERIMENTAL
-#   include <glm/gtx/rotate_vector.hpp>
-#undef GLM_ENABLE_EXPERIMENTAL
-
 #define PI 3.14159f
 
 const float MOVE_SPEED = 0.05f;
@@ -27,6 +22,12 @@ static float facing = 0.0f;
 static float tilt = 0.0f;
 
 static InputState state;
+
+const InputState DEFAULT_INPUT_STATE = {
+    { 0.0f, 0.0f, -1.0f },
+    { 0.0f, 0.0f, 0.0f },
+    false
+};
 
 // TODO Re-implement input using SDL
 
@@ -115,7 +116,7 @@ static void cursor_pos_callback_first(GLFWwindow* window, double xpos, double yp
 }
 */
 
-void Input::bind_handlers(SDL_Window* window)
+void input_bind_handlers(SDL_Window* window)
 {
 //  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 //  glfwSetCursorPosCallback(window, cursor_pos_callback_first);
@@ -125,7 +126,7 @@ void Input::bind_handlers(SDL_Window* window)
 //  update_state();
 }
 
-InputState Input::read_state()
+InputState input_read_state()
 {
     return state;
 }

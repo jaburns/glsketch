@@ -1,7 +1,9 @@
-#include <iostream>
-#include "common/gfx.hpp"
-#include "common/input.hpp"
-#include "teapots/main.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include "common/gfx.h"
+#include "common/input.h"
+// #include "teapots/main.hpp"
+
 
 static SDL_Window* s_window;
 static SDL_GLContext s_context;
@@ -85,17 +87,20 @@ int main(int argc, char** argv)
 {
     init_opengl();
 
-    TeapotFountain scene;
-    Input::bind_handlers(s_window);
+    scene_teapots_init();
+
+    input_bind_handlers(s_window);
 
     while (!s_should_close_window) {
-        const auto input_state = Input::read_state();
+        const struct InputState input_state = input_read_state();
 
-        scene.step(input_state, s_window_width, s_window_height);
+        scene_teapots_step(&input_state, s_window_width, s_window_height);
 
         SDL_GL_SwapWindow(s_window);
         poll_sdl_events();
     }
+
+    scene_teapots_destroy();
 
 	SDL_GL_DeleteContext(s_context);
 	SDL_DestroyWindow(s_window);
