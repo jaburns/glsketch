@@ -21,9 +21,7 @@ static float this_mouse_read_y = 0.0f;
 static float facing = 0.0f;
 static float tilt = 0.0f;
 
-static InputState state;
-
-const InputState DEFAULT_INPUT_STATE = {
+static InputState state = {
     { 0.0f, 0.0f, -1.0f },
     { 0.0f, 0.0f, 0.0f },
     false

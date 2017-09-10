@@ -12,7 +12,5 @@ typedef struct InputState
 }
 InputState;
 
-extern const InputState DEFAULT_INPUT_STATE;
-
 void input_bind_handlers(SDL_Window* window);
 InputState input_read_state();

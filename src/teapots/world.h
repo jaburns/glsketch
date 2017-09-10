@@ -20,6 +20,7 @@ typedef struct World
 
     Teapot *teapots;
     int teapot_count;
+    int teapot_write_pos;
 
     int frame_counter;
     float time_factor;
