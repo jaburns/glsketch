@@ -6,6 +6,7 @@
 #endif
 
 #include <math.h>
+#include <string.h>
 
 #define LINMATH_H_DEFINE_VEC(n) \
 typedef float vec##n[n]; \
@@ -44,22 +45,47 @@ static inline void vec##n##_norm(vec##n r, vec##n const v) \
 	float k = 1.0 / vec##n##_len(v); \
 	vec##n##_scale(r, v, k); \
 } \
-static inline void vec##n##_min(vec##n r, vec##n a, vec##n b) \
+static inline void vec##n##_min(vec##n r, vec##n const a, vec##n const b) \
 { \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i]<b[i] ? a[i] : b[i]; \
 } \
-static inline void vec##n##_max(vec##n r, vec##n a, vec##n b) \
+static inline void vec##n##_max(vec##n r, vec##n const a, vec##n const b) \
 { \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i]>b[i] ? a[i] : b[i]; \
+} \
+static inline void vec##n##_copy(vec##n r, vec##n const a) \
+{ \
+    memcpy(r, a, sizeof(float) * n); \
+} \
+static inline void vec##n##_lerp(vec##n r, vec##n const a, vec##n const b, float t) \
+{ \
+    int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = a[i] + t*(b[i]-a[i]); \
 }
 
 LINMATH_H_DEFINE_VEC(2)
 LINMATH_H_DEFINE_VEC(3)
 LINMATH_H_DEFINE_VEC(4)
+
+static inline void vec2_set(vec2 r, float x, float y)
+{
+    r[0] = x; r[1] = y;
+}
+
+static inline void vec3_set(vec3 r, float x, float y, float z)
+{
+    r[0] = x; r[1] = y; r[2] = z;
+}
+
+static inline void vec4_set(vec4 r, float x, float y, float z, float w)
+{
+    r[0] = x; r[1] = y; r[2] = z; r[3] = w;
+}
 
 static inline void vec3_mul_cross(vec3 r, vec3 const a, vec3 const b)
 {
@@ -433,22 +459,18 @@ static inline void mat4x4_look_at(mat4x4 m, vec3 eye, vec3 center, vec3 up)
 }
 
 typedef float quat[4];
+
+#define quat_add   vec4_add
+#define quat_sub   vec4_sub
+#define quat_scale vec4_scale
+#define quat_norm  vec4_norm
+#define quat_lerp  vec4_lerp
+#define quat_copy  vec4_copy
+
 static inline void quat_identity(quat q)
 {
 	q[0] = q[1] = q[2] = 0.f;
 	q[3] = 1.f;
-}
-static inline void quat_add(quat r, quat a, quat b)
-{
-	int i;
-	for(i=0; i<4; ++i)
-		r[i] = a[i] + b[i];
-}
-static inline void quat_sub(quat r, quat a, quat b)
-{
-	int i;
-	for(i=0; i<4; ++i)
-		r[i] = a[i] - b[i];
 }
 static inline void quat_mul(quat r, quat p, quat q)
 {
@@ -459,12 +481,6 @@ static inline void quat_mul(quat r, quat p, quat q)
 	vec3_scale(w, q, p[3]);
 	vec3_add(r, r, w);
 	r[3] = p[3]*q[3] - vec3_mul_inner(p, q);
-}
-static inline void quat_scale(quat r, quat v, float s)
-{
-	int i;
-	for(i=0; i<4; ++i)
-		r[i] = v[i] * s;
 }
 static inline float quat_inner_product(quat a, quat b)
 {
@@ -489,7 +505,6 @@ static inline void quat_rotate(quat r, float angle, vec3 axis) {
 		r[i] = v[i];
 	r[3] = cosf(angle / 2);
 }
-#define quat_norm vec4_norm
 static inline void quat_mul_vec3(vec3 r, quat q, vec3 v)
 {
 /*
