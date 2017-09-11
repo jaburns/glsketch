@@ -6,6 +6,7 @@
 #include "../resources.h"
 #include "../types.h"
 #include "../linmath.h"
+#include "../timer.h"
 #include "world.h"
 #include "teapot_renderer.h"
 #include "skybox_renderer.h"
@@ -13,6 +14,11 @@
 static World *s_world;
 static SkyboxRenderer *s_skybox_renderer;
 static TeapotRenderer *s_teapot_renderer;
+
+static uint64_t s_current_time;
+static uint64_t s_accumulator;
+
+static const uint64_t NANOS_PER_TICK = 16666667ull;  // 60 tps
 
 void scene_teapots_init()
 {
@@ -26,6 +32,9 @@ void scene_teapots_init()
     s_world = world_create();
     s_skybox_renderer = skybox_renderer_create();
     s_teapot_renderer = teapot_renderer_create(skybox_get_cubemap(s_skybox_renderer));
+
+    s_current_time = ns();
+    s_accumulator = 0;
 }
 
 void scene_teapots_destroy()
@@ -35,10 +44,8 @@ void scene_teapots_destroy()
     teapot_renderer_destroy(s_teapot_renderer);
 }
 
-void scene_teapots_step(const InputState *input, int width, int height)
+static void render(int width, int height)
 {
-    world_step(s_world, input);
-
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -57,4 +64,19 @@ void scene_teapots_step(const InputState *input, int width, int height)
     }
 
     skybox_renderer_draw_once(s_skybox_renderer, v, p);
+}
+
+void scene_teapots_step(const InputState *input, int width, int height)
+{
+    uint64_t new_time = ns();
+    uint64_t diff = new_time - s_current_time;
+    s_current_time = new_time;
+    s_accumulator += diff;
+
+    while (s_accumulator >= NANOS_PER_TICK) {
+        world_step(s_world, input);
+        s_accumulator -= NANOS_PER_TICK;
+    }
+
+    render(width, height);
 }
