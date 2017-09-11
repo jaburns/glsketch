@@ -71,6 +71,11 @@ LINMATH_H_DEFINE_VEC(2)
 LINMATH_H_DEFINE_VEC(3)
 LINMATH_H_DEFINE_VEC(4)
 
+static inline float float_lerp(float a, float b, float t)
+{
+    return a + t * (b - a);
+}
+
 static inline void vec2_set(vec2 r, float x, float y)
 {
     r[0] = x; r[1] = y;

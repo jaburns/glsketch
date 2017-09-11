@@ -11,9 +11,11 @@
 #include "teapot_renderer.h"
 #include "skybox_renderer.h"
 
-static World *s_world;
 static SkyboxRenderer *s_skybox_renderer;
 static TeapotRenderer *s_teapot_renderer;
+
+static World s_world_now;
+static World s_world_prev;
 
 static uint64_t s_current_time;
 static uint64_t s_accumulator;
@@ -29,9 +31,11 @@ void scene_teapots_init()
     glCullFace(GL_BACK);
     glClearColor(0.16f, 0.17f, 0.18f, 1.0f);
 
-    s_world = world_create();
     s_skybox_renderer = skybox_renderer_create();
     s_teapot_renderer = teapot_renderer_create(skybox_get_cubemap(s_skybox_renderer));
+
+    world_initialize(&s_world_now);
+    world_copy(&s_world_prev, &s_world_now);
 
     s_current_time = ns();
     s_accumulator = 0;
@@ -39,12 +43,11 @@ void scene_teapots_init()
 
 void scene_teapots_destroy()
 {
-    world_destroy(s_world);
     skybox_renderer_destroy(s_skybox_renderer);
     teapot_renderer_destroy(s_teapot_renderer);
 }
 
-static void render(int width, int height)
+static void render(const World *world, int width, int height)
 {
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -55,12 +58,12 @@ static void render(int width, int height)
     vec3 zero3 = { 0.0f, 0.0f, 0.0f };
 
     mat4x4 v;
-    mat4x4_look_at(v, zero3, s_world->camera_look, s_world->camera_up);
-    mat4x4_translate_in_place(v, -s_world->camera_position[0], -s_world->camera_position[1], -s_world->camera_position[2]);
+    mat4x4_look_at(v, zero3, world->camera_look, world->camera_up);
+    mat4x4_translate_in_place(v, -world->camera_position[0], -world->camera_position[1], -world->camera_position[2]);
 
-    teapot_renderer_use(s_teapot_renderer, s_world->camera_position, v, p);
-    for (int i = 0; i < s_world->teapot_count; ++i) {
-        teapot_renderer_draw(s_teapot_renderer, &s_world->teapots[i].transform);
+    teapot_renderer_use(s_teapot_renderer, world->camera_position, v, p);
+    for (int i = 0; i < world->teapot_count; ++i) {
+        teapot_renderer_draw(s_teapot_renderer, &world->teapots[i].transform);
     }
 
     skybox_renderer_draw_once(s_skybox_renderer, v, p);
@@ -74,9 +77,13 @@ void scene_teapots_step(const InputState *input, int width, int height)
     s_accumulator += diff;
 
     while (s_accumulator >= NANOS_PER_TICK) {
-        world_step(s_world, input);
+        world_copy(&s_world_prev, &s_world_now);
+        world_step(&s_world_now, input);
         s_accumulator -= NANOS_PER_TICK;
     }
 
-    render(width, height);
+    World lerped;
+    world_lerp(&lerped, &s_world_prev, &s_world_now, (float)s_accumulator / (float)NANOS_PER_TICK);
+
+    render(&lerped, width, height);
 }

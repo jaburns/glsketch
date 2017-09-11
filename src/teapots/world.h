@@ -10,6 +10,8 @@ typedef struct Teapot
 }
 Teapot;
 
+#define WORLD_MAX_TEAPOTS 600
+
 typedef struct World
 {
     vec3 camera_position;
@@ -18,7 +20,7 @@ typedef struct World
 
     quat parent_pot_tilt;
 
-    Teapot *teapots;
+    Teapot teapots[WORLD_MAX_TEAPOTS];
     int teapot_count;
     int teapot_write_pos;
 
@@ -27,6 +29,7 @@ typedef struct World
 }
 World;
 
-World *world_create();
+void world_initialize(World *world);
 void world_step(World *world, const InputState *input);
-void world_destroy(World *world);
+void world_copy(World *result, const World *other);
+void world_lerp(World *result, const World *a, const World *b, float t);

@@ -4,12 +4,9 @@
 
 static const float TIME_SPEED_UP = 1.5f;
 static const float TIME_SLOW_DOWN = 1.3f;
-static const int MAX_POTS = 600;
 
-World *world_create()
+void world_initialize(World *world)
 {
-    World *world = (World*)malloc(sizeof(World));
-
     vec3_set(world->camera_position, 0.0f, 0.0f,  0.0f);
     vec3_set(world->camera_up,       0.0f, 1.0f,  0.0f);
     vec3_set(world->camera_look,     0.0f, 0.0f, -1.0f);
@@ -21,13 +18,10 @@ World *world_create()
 
     world->teapot_count = 1;
     world->teapot_write_pos = 0;
-    world->teapots = (Teapot*)malloc(MAX_POTS * sizeof(Teapot));
 
     vec3_set(world->teapots[0].transform.position, 0.0f,  0.0f, -3.0f);
     vec3_set(world->teapots[0].transform.scale,    0.01f, 0.01f, 0.01f);
     quat_identity(world->teapots[0].transform.rotation);
-
-    return world;
 }
 
 static float linear_rand(float min, float max)
@@ -109,9 +103,9 @@ void world_step(World *world, const InputState *input)
         quat_identity(world->teapots[i].velocity.rotation);
         quat_rotate(world->teapots[i].velocity.rotation, linear_rand(-0.2f, 0.2f), new_pot_axis);
 
-        if (world->teapot_count < MAX_POTS) {
+        if (world->teapot_count < WORLD_MAX_TEAPOTS) {
             world->teapot_count++;
-            if (world->teapot_count == MAX_POTS) {
+            if (world->teapot_count == WORLD_MAX_TEAPOTS) {
                 world->teapot_write_pos = 0;
             } else {
                 world->teapot_write_pos++;
@@ -136,7 +130,34 @@ void world_step(World *world, const InputState *input)
     }
 }
 
-void world_destroy(World *world)
+void world_copy(World *result, const World *other)
 {
-    free(world);
+    memcpy(result, other, sizeof(World));
+}
+
+static void transform_lerp(Transform *result, const Transform *a, const Transform *b, float t)
+{
+    vec3_lerp(result->position, a->position, b->position, t);
+    vec3_lerp(result->scale, a->scale, b->scale, t);
+    quat_lerp(result->rotation, a->rotation, b->rotation, t);
+}
+
+void world_lerp(World *result, const World *a, const World *b, float t)
+{
+    vec3_lerp(result->camera_position, a->camera_position, b->camera_position, t);
+    vec3_lerp(result->camera_up, a->camera_up, b->camera_up, t);
+    vec3_lerp(result->camera_look, a->camera_look, b->camera_look, t);
+
+    quat_lerp(result->parent_pot_tilt, a->parent_pot_tilt, b->parent_pot_tilt, t);
+
+    result->teapot_count = a->teapot_count;
+    result->teapot_write_pos = b->teapot_write_pos;
+
+    for (int i = 0; i < a->teapot_count; ++i) {
+        transform_lerp(&result->teapots[i].transform, &a->teapots[i].transform, &b->teapots[i].transform, t);
+        transform_lerp(&result->teapots[i].velocity, &a->teapots[i].velocity, &b->teapots[i].velocity, t);
+    }
+
+    result->frame_counter = b->frame_counter;
+    result->time_factor = float_lerp(a->time_factor, b->time_factor, t);
 }
