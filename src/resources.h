@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gfx.h"
-#include "types.h"
 
 typedef GLuint ShaderProgramRef;
 typedef GLuint TextureRef;

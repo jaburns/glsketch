@@ -1,7 +1,6 @@
 #include "teapot_renderer.h"
 
 #include "../gfx.h"
-#include "../resources.h"
 #include "teapot_mesh.h" 
 
 struct TeapotRenderer

@@ -4,7 +4,6 @@
 
 #include "../gfx.h"
 #include "../resources.h"
-#include "../types.h"
 #include "../linmath.h"
 #include "../timer.h"
 #include "world.h"

@@ -1,7 +1,16 @@
 #pragma once
 
-#include "../types.h"
 #include "../input.h"
+
+#define WORLD_MAX_TEAPOTS 600
+
+typedef struct Transform
+{
+    vec3 position;
+    quat rotation;
+    vec3 scale;
+}
+Transform;
 
 typedef struct Teapot
 {
@@ -9,8 +18,6 @@ typedef struct Teapot
     Transform velocity;
 }
 Teapot;
-
-#define WORLD_MAX_TEAPOTS 600
 
 typedef struct World
 {
