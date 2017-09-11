@@ -114,9 +114,9 @@ int main(int argc, char** argv)
 
     scene_teapots_destroy();
 
-	SDL_GL_DeleteContext(s_context);
-	SDL_DestroyWindow(s_window);
-	SDL_Quit();
+    SDL_GL_DeleteContext(s_context);
+    SDL_DestroyWindow(s_window);
+    SDL_Quit();
 
     return 0;
 }
