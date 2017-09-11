@@ -2,7 +2,6 @@
 
 #include <stdbool.h>
 #include <math.h>
-#define PI 3.14159f
 
 static const float MOVE_SPEED = 0.05f;
 static const float MOUSE_SENSITIVITY = 1.0f / 200.0f;
