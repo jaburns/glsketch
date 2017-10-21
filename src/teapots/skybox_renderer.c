@@ -20,7 +20,7 @@ static GLfloat skybox_vertices[] = {
     -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f,
 };
 
-CubeMapRef skybox_get_cubemap(SkyboxRenderer *renderer) 
+CubeMapRef skybox_get_cubemap(SkyboxRenderer *renderer)
 {
     return renderer->cubemap;
 }
@@ -59,7 +59,7 @@ void skybox_renderer_draw_once(SkyboxRenderer *renderer, const mat4x4 *view, con
     glDepthFunc(GL_LEQUAL);
 
     mat4x4 trunc_view;
-    mat4x4_scale(trunc_view, *view, 1.0f);  // TODO write mat4x4_copy
+    mat4x4_scale(trunc_view, (vec4*)(*view), 1.0f);  // TODO write mat4x4_copy, don't cast away const
     trunc_view[0][3] = 0.0f;
     trunc_view[1][3] = 0.0f;
     trunc_view[2][3] = 0.0f;
@@ -69,8 +69,8 @@ void skybox_renderer_draw_once(SkyboxRenderer *renderer, const mat4x4 *view, con
     trunc_view[3][3] = 0.0f;
 
     glUseProgram(renderer->program);
-    glUniformMatrix4fv(glGetUniformLocation(renderer->program, "view"), 1, GL_FALSE, trunc_view);
-    glUniformMatrix4fv(glGetUniformLocation(renderer->program, "projection"), 1, GL_FALSE, projection);
+    glUniformMatrix4fv(glGetUniformLocation(renderer->program, "view"), 1, GL_FALSE, (const float*)trunc_view);
+    glUniformMatrix4fv(glGetUniformLocation(renderer->program, "projection"), 1, GL_FALSE, (const float*)projection);
     glUniform1i(glGetUniformLocation(renderer->program, "skybox"), 0);
 
     glBindVertexArray(renderer->vao);

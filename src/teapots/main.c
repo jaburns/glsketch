@@ -57,15 +57,15 @@ static void render(const World *world, int width, int height)
     vec3 zero3 = { 0.0f, 0.0f, 0.0f };
 
     mat4x4 v;
-    mat4x4_look_at(v, zero3, world->camera_look, world->camera_up);
+    mat4x4_look_at(v, zero3, (float*)world->camera_look, (float*)world->camera_up);
     mat4x4_translate_in_place(v, -world->camera_position[0], -world->camera_position[1], -world->camera_position[2]);
 
-    teapot_renderer_use(s_teapot_renderer, world->camera_position, v, p);
+    teapot_renderer_use(s_teapot_renderer, &world->camera_position, &v, &p);
     for (int i = 0; i < world->teapot_count; ++i) {
         teapot_renderer_draw(s_teapot_renderer, &world->teapots[i].transform);
     }
 
-    skybox_renderer_draw_once(s_skybox_renderer, v, p);
+    skybox_renderer_draw_once(s_skybox_renderer, &v, &p);
 }
 
 void scene_teapots_step(const InputState *input, int width, int height)

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <lodepng.h>
 
-static char* read_file(const char *path)
+static GLchar* read_file(const char *path)
 {
     char *buffer = 0;
     long length;
@@ -28,7 +28,7 @@ static char* read_file(const char *path)
 
 static GLuint shader_compile_from_file(const char *shader_path, GLenum shader_type)
 {
-    char *shader_contents = read_file(shader_path);
+    const GLchar *const shader_contents = read_file(shader_path);
 
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_contents, NULL);
@@ -46,12 +46,12 @@ static GLuint shader_compile_from_file(const char *shader_path, GLenum shader_ty
         printf("%s", log);
 
         free(log);
-        free(shader_contents);
+        free((void*)shader_contents);
 
         exit(EXIT_FAILURE);
     }
 
-    free(shader_contents);
+    free((void*)shader_contents);
 
     return shader;
 }
@@ -125,7 +125,7 @@ CubeMapRef resources_load_cubemap(const char *r, const char *l, const char *t, c
         unsigned int width, height;
         unsigned int error = lodepng_decode32_file(&image, &width, &height, sides[i]);
         if (error != 0) {
-            printf("PNG Error: ", lodepng_error_text(error));
+            printf("PNG Error: %s", lodepng_error_text(error));
             return 0;
         }
 
