@@ -29,17 +29,17 @@ static void init_opengl()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetSwapInterval(1); // 1: vsync, 0: fast
 
     s_window = SDL_CreateWindow(
-        "GL Sketch", 
+        "GL Sketch",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         s_window_width, s_window_height,
         SDL_WINDOW_OPENGL
     );
 
-    SDL_SetWindowResizable(s_window, SDL_TRUE);
+//  SDL_SetWindowResizable(s_window, SDL_TRUE);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
     s_context = SDL_GL_CreateContext(s_window);
