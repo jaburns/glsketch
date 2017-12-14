@@ -7,6 +7,6 @@
 #   include <GL/glew.h>
 #   include <SDL.h>
 #else
+#   include <GL/glew.h>
 #   include <SDL2/SDL.h>
-#   include <GL/gl.h>
 #endif

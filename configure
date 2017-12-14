@@ -11,7 +11,7 @@ BIN_FILE='game'
 if [[ "$OSTYPE" == "darwin"* ]]; then
     LDFLAGS='-lSDL2 -framework OpenGL'
 else
-    LDFLAGS='-lGL -lSDL2 -lSDL2main -lm'
+    LDFLAGS='-lGL -lSDL2 -lSDL2main -lm -lGLEW'
 fi
 
 c_to_obj() {

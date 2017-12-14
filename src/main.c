@@ -44,7 +44,7 @@ static void init_opengl()
 
     s_context = SDL_GL_CreateContext(s_window);
 
-#ifdef _WIN32
+#ifndef __APPLE__
     glewExperimental = GL_TRUE;
     const int glewInitResult = glewInit();
     if (glewInitResult != GLEW_OK) {
