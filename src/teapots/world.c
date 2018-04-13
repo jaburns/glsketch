@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include <stdlib.h>
+#include <webscope.h>
 
 static const float TIME_SPEED_UP = 1.5f;
 static const float TIME_SLOW_DOWN = 1.3f;
@@ -73,24 +74,26 @@ void world_step(World *world, const InputState *input)
         world->teapot_write_pos = 0;
     }
 
-    if (input->clicking) {
-        if (world->time_factor > 0.01f) {
-            world->time_factor /= TIME_SLOW_DOWN;
-        } else {
-            world->time_factor = 0.01f;
-        }
-    } else {
-        if (world->time_factor < 1.0f) {
-            world->time_factor *= TIME_SPEED_UP;
-        } else {
-            world->time_factor = 1.0f;
-        }
-    }
+//  if (input->clicking) {
+//      if (world->time_factor > 0.01f) {
+//          world->time_factor /= TIME_SLOW_DOWN;
+//      } else {
+//          world->time_factor = 0.01f;
+//      }
+//  } else {
+//      if (world->time_factor < 1.0f) {
+//          world->time_factor *= TIME_SPEED_UP;
+//      } else {
+//          world->time_factor = 1.0f;
+//      }
+//  }
+
+    world->time_factor = webscope_value("Time Factor", 1.0f, 0.001f, 10.0f);
 
     if (world->time_factor > 0.9f) {
         int i = world->teapot_write_pos;
 
-        float scale = linear_rand(0.005f, 0.01f);
+        float scale = webscope_value("Scale", 0.008f, 0.0001f, 0.1f); // linear_rand(0.005f, 0.01f);
         vec3_set(world->teapots[i].transform.position,  0.0f, 0.0f, -3.0f);
         vec3_set(world->teapots[i].transform.scale,   scale, scale, scale);
         quat_identity(world->teapots[i].transform.rotation);

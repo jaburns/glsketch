@@ -5,7 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Requires SDL2 v2.0.5: brew install sdl2 | apt install libsdl2-dev
 
 CC='cc'
-CFLAGS='-Iexternal/lodepng'
+CFLAGS='-Iexternal/lodepng -Iexternal/webscope'
 BIN_FILE='game'
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -28,6 +28,7 @@ make_cmd() {
 file_list() {
     find src -iname '*.c'
     echo external/lodepng/lodepng.c
+    echo external/webscope/webscope.c
 }
 
 print_makefile() {

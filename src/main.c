@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <webscope.h>
 #include "gfx.h"
 #include "input.h"
 #include "teapots/main.h"
@@ -100,10 +101,13 @@ static void poll_sdl_events()
 int main(int argc, char** argv)
 {
     init_opengl();
+    webscope_open(1337);
 
     scene_teapots_init();
 
     while (!s_should_close_window) {
+        webscope_update();
+
         const InputState input_state = input_read_state();
 
         scene_teapots_step(&input_state, s_window_width, s_window_height);
@@ -112,6 +116,7 @@ int main(int argc, char** argv)
         poll_sdl_events();
     }
 
+    webscope_close();
     scene_teapots_destroy();
 
     SDL_GL_DeleteContext(s_context);

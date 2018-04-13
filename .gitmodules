@@ -1,0 +1,3 @@
+[submodule "external/webscope"]
+	path = external/webscope
+	url = git@github.com:jaburns/webscope
